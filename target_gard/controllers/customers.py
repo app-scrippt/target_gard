@@ -39,7 +39,7 @@ class TargetGard(http.Controller):
 				[partner_id]
 			)
 			if request.env.cr.fetchone():
-				img_url = 'http://'+request.httprequest.__dict__['environ']['HTTP_HOST']+'/web/image?model=res.partner&id=%s&field=image_1920' % partner_id,
+				img_url = 'http://'+request.httprequest.__dict__['environ']['HTTP_HOST']+'/web/partner_image/%s/image_1920/res.partner' % partner_id,
 				return img_url[0]
 			else:
 				return '/'

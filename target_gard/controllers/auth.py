@@ -29,23 +29,23 @@ class authentication(http.Controller):
 		if type == 'all':
 			data = {
 				'id':employee_id.id,
-                'name':employee_id.name,
-                'department':employee_id.department_id.name if employee_id.department_id.name else '',
-                'nationality':employee_id.country_id.name if employee_id.country_id.name else '',
-                'mobile':employee_id.phone if employee_id.phone else '',
-                'birthday':str(employee_id.birthday) if employee_id.birthday else '',
-                'martial_status':{'id':employee_id.marital if employee_id.marital else '' , 'name':dict(employee_id._fields['marital'].selection).get(employee_id.marital) if employee_id.marital else ''},
-                'email':employee_id.private_email if employee_id.private_email else '',
-                'address':{'lan':employee_id.address_home_id.lan if employee_id.address_home_id.lan else 0,'lat':employee_id.address_home_id.lat if employee_id.address_home_id.lat else 0, 'address':employee_id.address_home_id.street if employee_id.address_home_id.street else ''},
-                'work_address':employee_id.address_id.name if employee_id.address_id.name else '',
-                'job':employee_id.job_id.name if employee_id.job_id.name else '',
-                'img_url':img_url if img_url else '/',
+				'name':employee_id.name,
+				'department':employee_id.department_id.name if employee_id.department_id.name else '',
+				'nationality':employee_id.country_id.name if employee_id.country_id.name else '',
+				'mobile':employee_id.phone if employee_id.phone else '',
+				'birthday':str(employee_id.birthday) if employee_id.birthday else '',
+				'martial_status':{'id':employee_id.marital if employee_id.marital else '' , 'name':dict(employee_id._fields['marital'].selection).get(employee_id.marital) if employee_id.marital else ''},
+				'email':employee_id.private_email if employee_id.private_email else '',
+				'address':{'lan':employee_id.address_home_id.lan if employee_id.address_home_id.lan else 0,'lat':employee_id.address_home_id.lat if employee_id.address_home_id.lat else 0, 'address':employee_id.address_home_id.street if employee_id.address_home_id.street else ''},
+				'work_address':employee_id.address_id.name if employee_id.address_id.name else '',
+				'job':employee_id.job_id.name if employee_id.job_id.name else '',
+				'img_url':img_url if img_url else '/',
 
-                # must adding after end customize
-                
-                # 'progress':
-                # 'current_commission_amount':
-                # 'representative_points':
+				# must adding after end customize
+
+				# 'progress':
+				# 'current_commission_amount':
+				# 'representative_points':
 				   }
 		else:
 			data = {
@@ -60,41 +60,41 @@ class authentication(http.Controller):
 
 
 	def authenticate(self):
-        """This method is based on auth2 authentication.
-            It will authenticate the users token.
-            params :
-            Authorization: Authorization should be part of request header
-            and it must include Bearer
-            Return: It will raise error if token is invalid.
+		"""This method is based on auth2 authentication.
+			It will authenticate the users token.
+			params :
+			Authorization: Authorization should be part of request header
+			and it must include Bearer
+			Return: It will raise error if token is invalid.
 
-            To use this method import it in your controler 
-            from odoo.addons.odoo_auth2.controllers.auth2_authentication import authenticate
-            add authentication() in your controller: 
+			To use this method import it in your controler 
+			from odoo.addons.odoo_auth2.controllers.auth2_authentication import authenticate
+			add authentication() in your controller: 
 
-        """
-        error ={}
-        headers = dict(list(request.httprequest.headers.items()))
-        authHeader = headers['Authorization']
-        if authHeader.startswith("Bearer "):
-            try:
-                access_token = authHeader[7:]
-                request.env.cr.execute(
-                    "SELECT id  FROM res_users WHERE  auth2_access_token=%s",
-                    [access_token]
-                )
-                data = request.env.cr.fetchone()#request.env['res.users'].search([('auth2_access_token','=',str(access_token))])
-                user_id = request.env['res.users'].sudo().browse([data][0])
-                if not user_id:
-                    raise UserError("Access Token Invalid.")
-                user = user_id
-                db = request.session.db
-                #password = str([data][0][1]).decode('utf-8')
-                #request.session.authenticate(db, user.sudo().login , '')
-                return request.env['ir.http'].session_info(),user_id
-            except Exception as e:
-                raise e
-        else:
-            raise UserError("Access Token Invalid Start with Bearer")
+		"""
+		error ={}
+		headers = dict(list(request.httprequest.headers.items()))
+		authHeader = headers['Authorization']
+		if authHeader.startswith("Bearer "):
+			try:
+				access_token = authHeader[7:]
+				request.env.cr.execute(
+				    "SELECT id  FROM res_users WHERE  auth2_access_token=%s",
+				    [access_token]
+				)
+				data = request.env.cr.fetchone()#request.env['res.users'].search([('auth2_access_token','=',str(access_token))])
+				user_id = request.env['res.users'].sudo().browse([data][0])
+				if not user_id:
+				    raise UserError("Access Token Invalid.")
+				user = user_id
+				db = request.session.db
+				#password = str([data][0][1]).decode('utf-8')
+				#request.session.authenticate(db, user.sudo().login , '')
+				return request.env['ir.http'].session_info(),user_id
+			except Exception as e:
+				raise e
+		else:
+			raise UserError("Access Token Invalid Start with Bearer")
 
 	def get_employee_image(self,employee_id):
 		if employee_id:
@@ -225,7 +225,7 @@ class authentication(http.Controller):
 				message = 'Wrong login/password'
 				status = False
 				code = 400
-		  
+		
 
 			vals = {
 				'data' : {'access_token':access_token,'user_data':data},
