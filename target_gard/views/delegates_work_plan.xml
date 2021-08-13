@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+            <record id="delegate_tree" model="ir.ui.view">
+                <field name="name">target.delegate.tree</field>
+                <field name="model">target.delegate</field>
+                <field name="arch" type="xml">
+                    <tree string="Delegate Work Line">
+                        <field name="city_ids"/> 
+                        <field name="geographical_area"/>
+                        <field name="prodect_ids"/>
+                        <field name="employee_id"/>
+                        <field name="place"/>
+                    </tree>
+                </field>
+		    </record>
+
+            <record id="delegate_form" model="ir.ui.view">
+			<field name="name">Delegate Work Line</field>
+			<field name="model">target.delegate</field>
+			<field name="arch" type="xml">
+				<form string="Delegate Work Line">
+					<sheet>
+                            <group col ="4">
+                                <label for="employee_id" class="oe_edit_only"/>
+                                    <h2>
+                                        <field name="employee_id" 
+                                            placeholder="Select Sales person..."
+                                            class="oe_inline"/>
+                                    </h2>
+
+                                <label for="city_ids" class="oe_edit_only"/>
+                                    <h2>
+                                        <field name="city_ids" widget ="many2many_tags" 
+                                            placeholder="Select city..."
+                                            class="oe_inline"/>
+                                    </h2>
+                            </group>
+                            
+                            <group col ="4">
+
+                                <label for="prodect_ids" class="oe_edit_only"/>
+                                    <h2>
+                                        <field name="prodect_ids" widget ="many2many_tags" 
+                                            placeholder="Select prodect..."
+                                            class="oe_inline"/>
+                                    </h2>
+
+                                <label for="geographical_area" class="oe_edit_only"/>
+                                    <h2>
+                                        <field name="geographical_area" widget ="many2many_tags" 
+                                            placeholder="Select area..."
+                                            class="oe_inline"/>
+                                    </h2>
+                            </group>
+                        <div class="oe_title">
+                            <group>
+                                    <field name="place" 
+                                        placeholder="Select place..."/>
+                            </group>    
+                        </div>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        	<record id="action_delegates" model="ir.actions.act_window">
+            <field name="name">Delegate Work Line</field>
+            <field name="res_model">target.delegate</field>
+        	<field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+             	<p class="o_view_nocontent_smiling_face">create your first delegate work line</p>
+            </field>
+        </record>
+        <menuitem id="delegate_work" name="Delegate Work" sequence="0" action="action_delegates" />
+    </data>
+</odoo>

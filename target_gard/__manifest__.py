@@ -9,6 +9,9 @@
     'depends': ['hr','sale','contacts','account'],
     'data': [
         # 'security/ir.model.access.csv',
+            'security/ir.model.access.csv',
+            'views/target_guard_view.xml',
+            'views/delegates_work_plan.xml',
 
     ],
     'demo': [

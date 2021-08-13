@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    	<record id="guard_tree" model="ir.ui.view">
+			<field name="name">target.guard.tree</field>
+			<field name="model">target.guard</field>
+			<field name="arch" type="xml">
+				<tree string="Guard">
+					<field name="name"/>
+					<field name="employee_id"/>
+					<field name="from_date"/>
+					<field name="to_date"/>
+				</tree>
+			</field>
+		</record>
+
+    	<record id="traning_form" model="ir.ui.view">
+			<field name="name">Guard</field>
+			<field name="model">target.guard</field>
+			<field name="arch" type="xml">
+				<form string="Guard">
+					<sheet>
+						<div name="button_box"  class="oe_button_box">
+							<button name="open_customer_order" string="Sales"  type="object" icon="fa-book" class="oe_stat_button">	
+							</button>
+
+							<button name="open_sales_order" string="Order"  type="object" icon="fa-tasks" class="oe_stat_button">	
+							</button>
+
+							<button name="open_target_order" string="Target"  type="object" icon="fa-users" class="oe_stat_button">	
+							
+							</button>
+						</div>
+						<div class="oe_title">
+							<group col="4">
+								<h2>
+									<field name="name" default_focus="1" placeholder="Employee's Name"/>
+								</h2>
+							</group>
+						</div>
+						<group col="4">
+							
+							<label for="from_date" class="oe_edit_only"/>
+                                    <h2>
+                                        <field name="from_date" placeholder="Select date..."
+                                            class="oe_inline"/>
+                                    </h2>
+							<label for="to_date" class="oe_edit_only"/>
+                                    <h2>
+                                        <field name="to_date" placeholder="Select date..."
+                                            class="oe_inline"/>
+                                    </h2>
+							<label for="employee_id" class="oe_edit_only"/>
+                                    <h2>
+                                        <field name="employee_id" 
+                                            placeholder="Select employee..."
+                                            class="oe_inline"/>
+                                    </h2>
+						</group>
+						<notebook>
+							<page string="Target Line">
+								<field name="target_line" >
+									<tree editable="bottom">
+										<field name="employee_id"/>
+										<field name="sales_person_targets"/>
+										<field name="commission_type"/>
+										<field name="target_type"/>
+										<field name="commission_value"/>
+										<field name="commission_amount"/>
+										<field name="target_amount"/>
+										<field name="from_date"/>
+										<field name="to_date"/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		<record id="action_target" model="ir.actions.act_window">
+            <field name="name">Guard</field>
+            <field name="res_model">target.guard</field>
+        	<field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+             	<p class="o_view_nocontent_smiling_face">create your first custmor</p>
+            </field>
+        </record>
+
+		<menuitem id="target_guard" name="Target Guard" sequence="0" />
+        <menuitem id="target_guard_menu" name="Target Guard App" parent="target_guard" action="action_target"/>
+    </data>
+</odoo>
