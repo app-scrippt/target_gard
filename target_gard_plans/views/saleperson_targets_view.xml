@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- ____________________ Plans ________________________ -->
+
+        <record model="ir.ui.view" id="saleperson_target_plan_form_view">
+            <field name="name">saleperson.target.plan.form</field>
+            <field name="model">saleperson.target.plan</field>
+            <field name="arch" type="xml">
+                <form string="Plan">
+                    <!-- <header>
+                        <button icon="fa-cogs" string="Confirm" name="done_action" type="object" states="draft"/>
+                        <button name="draft_action" string="Return" type="object" states="done"/>
+                        <field name="state" widget="statusbar" />
+                    </header> -->
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="sub_plan_id"/>
+                            <field name="saleperson_id"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="target_type"/>
+                            <field name="target_amount" attrs="{'invisible':[('target_type','!=','amount')],
+                                            'required':[('target_type','=','amount')]}"/>
+                            <field name="target_achievement_rate"/>
+                            <field name="commission_id"/>
+                        </group>
+                        <notebook>
+                            <page string="Details" name="details" attrs="{'invisible':[('target_type','=','amount')]}">
+                                <group colspan="2" col="2">
+                                    <field name="lines" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="product_id" widget="selection"/>
+                                            <field name="target_amount" />
+                                            <field name="target_qty"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="saleperson_target_plan_tree_view">
+            <field name="name">saleperson.target.plan.tree</field>
+            <field name="model">saleperson.target.plan</field>
+            <field name="arch" type="xml">
+                <tree string="Plans">
+                    <field name="sub_plan_id"/>
+                    <field name="saleperson_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="target_type"/>
+                    <field name="target_achievement_rate"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="saleperson_target_plan_kanban_view" model="ir.ui.view">
+            <field name="name">saleperson.target.plan.kanban</field>
+            <field name="model">saleperson.target.plan</field>
+            <field name="arch" type="xml">
+                <kanban class="o_hr_employee_kanban">
+                    <field name="id"/>
+                    <templates>
+                       <t t-name="kanban-box">
+                       <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                           <!-- <field name="target_achievement_rate" widget="percentpie"/> -->
+                           <field name="target_achievement_rate" widget="gauge" options="{'max_field': 'maximum_rate'}">
+                            Progress
+                           </field>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <field name="sub_plan_id" />
+                                </strong>
+                               <ul>
+                                    <li t-if="record.start_date" class="o_force_ltr">
+                                        <field name="start_date" />
+                                    </li>
+                                    <li t-if="record.end_date" class="o_force_ltr">
+                                        <field name="end_date" />
+                                    </li>
+                               </ul>
+                           </div>
+                       </div>
+                       </t>
+                   </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="saleperson_target_plan_action_view" model="ir.actions.act_window">
+            <field name="name">Plans</field>
+            <field name="res_model">saleperson.target.plan</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="saleperson_target_plan_kanban_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Plan
+                </p>
+            </field>
+        </record>
+
+                <!-- ____________________ Visits ________________________ -->
+
+        <!-- ____________________ Saleperson Plans ________________________ -->
+
+        <record model="ir.ui.view" id="saleperson_plan_form_view">
+            <field name="name">saleperson.plan.form</field>
+            <field name="model">saleperson.plan</field>
+            <field name="arch" type="xml">
+                <form string="Plan">
+                    <header>
+                        <!-- <button icon="fa-cogs" string="Confirm" name="done_action" type="object" states="draft"/> -->
+                        <!-- <button name="draft_action" string="Return" type="object" states="done"/> -->
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="saleperson_id"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <notebook>
+                            <page string="Details" name="details">
+                                <group colspan="2" col="2">
+                                    <field name="visit_ids" nolabel="1">
+                                        <!-- <tree editable="bottom">
+                                            <field name="saleperson_id"/>
+                                            <field name="partner_id"/>
+                                            <field name="date" />
+                                            <field name="state"/>
+                                        </tree> -->
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="saleperson_plan_tree_view">
+            <field name="name">saleperson.plan.tree</field>
+            <field name="model">saleperson.plan</field>
+            <field name="arch" type="xml">
+                <tree string="SalepersonS Plans">
+                    <field name="saleperson_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="saleperson_plan_kanban_view" model="ir.ui.view">
+            <field name="name">saleperson.plan.kanban</field>
+            <field name="model">saleperson.plan</field>
+            <field name="arch" type="xml">
+                <kanban class="o_hr_employee_kanban">
+                    <field name="id"/>
+                    <templates>
+                       <t t-name="kanban-box">
+                       <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                           <!-- <field name="target_achievement_rate" widget="percentpie"/> -->
+                           <!-- <field name="target_achievement_rate" widget="gauge" options="{'max_field': 'maximum_rate'}">
+                            Progress
+                           </field> -->
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <field name="saleperson_id" />
+                                </strong>
+                               <ul>
+                                    <li t-if="record.start_date" class="o_force_ltr">
+                                        <field name="start_date" />
+                                    </li>
+                                    <li t-if="record.end_date" class="o_force_ltr">
+                                        <field name="end_date" />
+                                    </li>
+                               </ul>
+                           </div>
+                       </div>
+                       </t>
+                   </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="saleperson_plan_action_view" model="ir.actions.act_window">
+            <field name="name">Salepersons Plans</field>
+            <field name="res_model">saleperson.plan</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="saleperson_plan_kanban_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Saleperson Plan
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem
+            id="saleperson_target_plan_root_menu"
+            name="Saleperson Targets"
+            parent="target_management_menu_root"
+            sequence="2"
+            groups="base.group_user"
+        />
+
+        <menuitem
+            id="saleperson_target_plan_menu"
+            name="Saleperson Target Plans"
+            parent="saleperson_target_plan_root_menu"
+            action="saleperson_target_plan_action_view"
+            sequence="1"
+            groups="base.group_user"
+        />
+
+        <menuitem
+            id="saleperson_visits_menu"
+            name="Visits"
+            parent="saleperson_target_plan_root_menu"
+            action="calendar.action_calendar_event"
+            sequence="2"
+        />
+
+        <menuitem
+            id="saleperson_plans_menu"
+            name="Saleperson Visits Plans"
+            parent="saleperson_target_plan_root_menu"
+            action="saleperson_plan_action_view"
+            sequence="3"
+            groups="base.group_user"
+        />
+
+    </data>
+</odoo>

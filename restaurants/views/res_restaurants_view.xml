@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- ________________Sale and Purchase___________________ -->
+
+        <record model="ir.ui.view" id="res_restaurants_form_view">
+            <field name="name">res.restaurants.form</field>
+            <field name="model">res.restaurants</field>
+            <field name="arch" type="xml">
+                <form string="Shop">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="name"/>
+                            <field name="company_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_restaurants_tree_view">
+            <field name="name">res.restaurants.tree</field>
+            <field name="model">res.restaurants</field>
+            <field name="arch" type="xml">
+                <tree string="Shops">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_restaurants_kanban_view" model="ir.ui.view">
+            <field name="name">res.restaurants.kanban</field>
+            <field name="model">res.restaurants</field>
+            <field name="arch" type="xml">
+                <kanban class="o_hr_employee_kanban">
+                    <field name="id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <h2>
+                                        <a type="open">
+                                            <field name="name" />
+                                        </a>
+                                    </h2>
+                                    <h6>
+                                        <a type="open" style="color:#ff1ac6 ! important;">
+                                            <field name="company_id"/>
+                                        </a>
+                                    </h6>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="res_restaurants_action_view" model="ir.actions.act_window">
+            <field name="name">Shops</field>
+            <field name="res_model">res.restaurants</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="res_restaurants_kanban_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Restaurants
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Shops Management"
+            id="restaurants_management_menu_root"
+            sequence="1"
+            groups="base.group_user"
+            web_icon="restaurants,static/description/icon.png"
+        />
+
+        <menuitem
+            id="restaurants_menu_action"
+            name="Shops"
+            parent="restaurants_management_menu_root"
+            action="res_restaurants_action_view"
+            sequence="1"
+            groups="base.group_user"
+        />
+
+    </data>
+</odoo>

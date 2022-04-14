@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- ____________________ Commissions ________________________ -->
+
+        <record model="ir.ui.view" id="saleperson_commission_config_form_view">
+            <field name="name">saleperson.commission.config.form</field>
+            <field name="model">saleperson.commission.config</field>
+            <field name="arch" type="xml">
+                <form string="Plan">
+                    <header>
+                        <!-- <button icon="fa-cogs" string="Confirm" name="done_action" type="object" states="draft"/>
+                        <button name="draft_action" string="Return" type="object" states="done"/> -->
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="name"/>
+                            <field name="company_id"/>
+                        </group>
+                        <notebook>
+                            <page string="Details" name="details" >
+                                <group colspan="2" col="2">
+                                    <field name="lines" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="commission_type" />
+                                            <field name="commission_due_amount" />
+                                            <field name="commission_amount"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="saleperson_commission_config_tree_view">
+            <field name="name">saleperson.commission.config.tree</field>
+            <field name="model">saleperson.commission.config</field>
+            <field name="arch" type="xml">
+                <tree string="Plans">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="saleperson_commission_config_kanban_view" model="ir.ui.view">
+            <field name="name">saleperson.commission.config.kanban</field>
+            <field name="model">saleperson.commission.config</field>
+            <field name="arch" type="xml">
+                <kanban class="o_hr_employee_kanban">
+                    <field name="id"/>
+                    <templates>
+                       <t t-name="kanban-box">
+                       <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                           <!-- <field name="target_achievement_rate" widget="percentpie"/> -->
+                           <!-- <field name="target_achievement_rate" widget="gauge" options="{'max_field': 'maximum_rate'}">
+                            Progress
+                           </field> -->
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <field name="name" />
+                                </strong>
+                               <ul>
+                                    <li t-if="record.state" class="o_force_ltr">
+                                        <field name="state" />
+                                    </li>
+                                    <!-- <li t-if="record.end_date" class="o_force_ltr">
+                                        <field name="end_date" />
+                                    </li> -->
+                               </ul>
+                           </div>
+                       </div>
+                       </t>
+                   </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="saleperson_commission_config_action_view" model="ir.actions.act_window">
+            <field name="name">Commissions</field>
+            <field name="res_model">saleperson.commission.config</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="saleperson_commission_config_kanban_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Commission
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="configuration_root_menu"
+            name="Configurations"
+            parent="target_management_menu_root"
+            sequence="3"
+            groups="base.group_user"
+        />
+
+        <menuitem
+            id="saleperson_commission_config_menu"
+            name="Commissions"
+            parent="configuration_root_menu"
+            action="saleperson_commission_config_action_view"
+            sequence="1"
+            groups="base.group_user"
+        />
+
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<odoo>
+    <data noupdate="1">
+        <record id="plans_management_config_data_1" model="plans.management.config">
+            <field name="name">Run or Close Main Plans</field>
+        </record>
+
+        <record id="plans_management_config_data_2" model="plans.management.config">
+            <field name="name">Run or Close Sub Plans</field>
+        </record>
+
+        <record id="plans_management_config_data_3" model="plans.management.config">
+            <field name="name">Run or Close Sale Person's Plan</field>
+        </record>
+
+    </data>
+</odoo>

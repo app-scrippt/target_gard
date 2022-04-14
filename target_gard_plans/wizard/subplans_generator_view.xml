@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="subplans_generator_form_view">
+            <field name="name">subplans.generator.form</field>
+            <field name="model">subplans.generator</field>
+            <field name="arch" type="xml">
+                <form string="Sub Plan">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="plan_id" required="1" readonly="1"/>
+                            <field name="duration_type"/>
+                            <field name="duration" attrs="{'invisible':[('duration_type','!=','other')],'required':[('duration_type','=','other')]}"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button icon="fa-print fa-2x" string="Geneate" name="generate_subplans" type="object" class="oe_highlight" />
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="subplans_generator_action_view" model="ir.actions.act_window">
+            <field name="name">SubPlans Generator</field>
+            <field name="res_model">subplans.generator</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new SubPlans
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

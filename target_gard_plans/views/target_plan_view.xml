@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- ____________________ Plans ________________________ -->
+
+        <record model="ir.ui.view" id="target_plan_form_view">
+            <field name="name">target.plan.form</field>
+            <field name="model">target.plan</field>
+            <field name="arch" type="xml">
+                <form string="Plan">
+                    <header>
+                        <button icon="fa-cogs" string="Confirm" name="confirm_action" type="object" states="draft"/>
+                        <button icon="fa-cogs" string="Close" name="done_action" type="object" states="running"/>
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="name" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="company_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="start_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="end_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="target_type" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="target_amount" attrs="{'readonly':['|',('state','!=','draft'),('target_type','!=','amount')],'invisible':[('target_type','=','amount')]}" />
+                            <field name="amount" attrs="{'readonly':[('state','!=','draft')],'invisible':[('target_type','!=','amount')],'required':[('target_type','=','amount')]}" />
+                            <field name="target_achievement_rate"/>
+                            <field name="create_subplans_machinism" attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                        <notebook>
+                            <page string="Details" name="details" attrs="{'invisible':[('target_type','=','amount')]}">
+                                <group colspan="2" col="2">
+                                    <field name="lines" nolabel="1" attrs="{'readonly':[('state','!=','draft')]}">
+                                        <tree editable="bottom">
+                                            <field name="product_id"/>
+                                            <field name="target_amount"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Sub Plans" name="subplans">
+                                <button name="genrate_subplans_view"
+                                    type="object"
+                                    icon="fa-gears" attrs="{'invisible':['|',('create_subplans_machinism','=','manual'),('state','!=','running')]}" style="border-radius:15px;">
+                                    Create SubPlans
+                                </button>
+                                <group colspan="2" col="2">
+                                    <field name="sub_plans" nolabel="1" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="target_plan_tree_view">
+            <field name="name">target.plan.tree</field>
+            <field name="model">target.plan</field>
+            <field name="arch" type="xml">
+                <tree string="Plans">
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="target_type"/>
+                    <field name="target_achievement_rate"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="target_plan_kanban_view" model="ir.ui.view">
+            <field name="name">target.plan.kanban</field>
+            <field name="model">target.plan</field>
+            <field name="arch" type="xml">
+                <kanban class="o_hr_employee_kanban">
+                    <field name="id"/>
+                    <templates>
+                       <t t-name="kanban-box">
+                       <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                           <!-- <field name="target_achievement_rate" widget="percentpie"/> -->
+                           <field name="target_achievement_rate" widget="gauge" options="{'max_field': 'maximum_rate'}">
+                            Progress
+                           </field>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <field name="name" placeholder="plan's Name"/>
+                                </strong>
+                               <ul>
+                                   <li t-if="record.company_id" class="o_text_overflow">
+                                        <field name="company_id" />
+                                    </li>
+                                    <li t-if="record.start_date" class="o_force_ltr">
+                                        <field name="start_date" />
+                                    </li>
+                                    <li t-if="record.end_date" class="o_force_ltr">
+                                        <field name="end_date" />
+                                    </li>
+                               </ul>
+                           </div>
+                       </div>
+                       </t>
+                   </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="target_plan_action_view" model="ir.actions.act_window">
+            <field name="name">Plans</field>
+            <field name="res_model">target.plan</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="target_plan_kanban_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Plan
+                </p>
+            </field>
+        </record>
+
+        <!-- ____________________ Sub Plans ________________________ -->
+
+        <record model="ir.ui.view" id="target_plan_child_form_view">
+            <field name="name">target.plan.child.form</field>
+            <field name="model">target.plan.child</field>
+            <field name="arch" type="xml">
+                <form string="Sub Plan" >
+                    <header>
+                        <button icon="fa-cogs" string="Confirm" name="confirm_action" type="object" states="draft"/>
+                        <!-- <button name="draft_action" string="Return" type="object" states="done"/> -->
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="name" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="plan_id" required="1" attrs="{'readonly':[('state','!=','draft')]}" widget="selection"/>
+                            <field name="start_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="end_date" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="child_plan_type" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="target_amount" attrs="{'invisible':[('child_plan_type','!=','amount')],
+                                            'required':[('child_plan_type','=','amount')],'readonly':[('state','!=','draft')]}"/>
+                            <field name="target_amount_achievement"/>
+                            <field name="target_achievement_rate" widget="percentage"/>
+                            <field name="create_SP_plans_machinism" invisible="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Sale Persons Plans" name="salepersons_plans">
+                                <button name="generate_saleperson_plans"
+                                    type="object"
+                                    icon="fa-gears" attrs="{'invisible':['|',('create_SP_plans_machinism','=','manual'),('state','!=','running')]}" style="border-radius:15px;">
+                                    Create Salepersons Plans
+                                </button>
+                                <group colspan="2" col="2">
+                                    <field name="saleperson_plans_ids" nolabel="1" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="Related Sale Persons" name="related_salepersons">
+                                <group colspan="2" col="2">
+                                    <field name="saleperson_ids" nolabel="1" widget="many2many_tags" required="1"/>
+                                </group>
+                            </page>
+                            <page string="Details" name="details" attrs="{'invisible':[('child_plan_type','=','amount')]}">
+                                <group colspan="2" col="2">
+                                    <field name="lines" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="product_id"/>
+                                            <field name="target_amount" />
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="target_plan_child_tree_view">
+            <field name="name">target.plan.child.tree</field>
+            <field name="model">target.plan.child</field>
+            <field name="arch" type="xml">
+                <tree string="Plans">
+                    <field name="name" />
+                    <field name="plan_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="child_plan_type"/>
+                    <field name="target_achievement_rate"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="target_plan_child_kanban_view" model="ir.ui.view">
+            <field name="name">target.plan.child.kanban</field>
+            <field name="model">target.plan.child</field>
+            <field name="arch" type="xml">
+                <kanban class="o_hr_employee_kanban" >
+                    <field name="id"/>
+                    <templates>
+                       <t t-name="kanban-box">
+                       <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                           <field name="target_achievement_rate" widget="percentage"/>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <field name="name" />
+                                </strong>
+                               <ul>
+                                    <li t-if="record.start_date" class="o_force_ltr">
+                                        <field name="start_date" />
+                                    </li>
+                                    <li t-if="record.end_date" class="o_force_ltr">
+                                        <field name="end_date" />
+                                    </li>
+                               </ul>
+                           </div>
+                       </div>
+                       </t>
+                   </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="target_plan_child_action_view" model="ir.actions.act_window">
+            <field name="name">Sub Plans</field>
+            <field name="res_model">target.plan.child</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="target_plan_child_kanban_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Child Plan
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Target Management"
+            id="target_management_menu_root"
+            sequence="1"
+            groups="base.group_user"
+            web_icon="target_gard_plans,static/description/icon.png"
+        />
+
+        <menuitem
+            id="target_plan_root_menu"
+            name="Plans Management"
+            parent="target_management_menu_root"
+            sequence="1"
+            groups="base.group_user"
+        />
+
+        <menuitem
+            id="plans_menu_action"
+            name="Plans"
+            parent="target_plan_root_menu"
+            action="target_plan_action_view"
+            sequence="1"
+            groups="base.group_user"
+        />
+
+        <menuitem
+            id="sub_plans_menu_action"
+            name="Sub Plans"
+            parent="target_plan_root_menu"
+            action="target_plan_child_action_view"
+            sequence="2"
+            groups="base.group_user"
+        />
+
+    </data>
+</odoo>

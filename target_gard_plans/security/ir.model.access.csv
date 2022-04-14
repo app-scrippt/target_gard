@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_target_plan,access.target_plan,target_gard_plans.model_target_plan,base.group_user,1,1,1,1
+access_target_plan_child,access.target_plan_child,target_gard_plans.model_target_plan_child,base.group_user,1,1,1,1
+access_target_plan_line,access.target_plan_line,target_gard_plans.model_target_plan_line,base.group_user,1,1,1,1
+access_saleperson_target_plan,access.saleperson_target_plan,target_gard_plans.model_saleperson_target_plan,base.group_user,1,1,1,1
+access_saleperson_plan,access.saleperson_plan,target_gard_plans.model_saleperson_plan,base.group_user,1,1,1,1
+access_saleperson_target_plan_line,access.saleperson_target_plan_line,target_gard_plans.model_saleperson_target_plan_line,base.group_user,1,1,1,1
+access_saleperson_commission_config,access.saleperson_commission_config,target_gard_plans.model_saleperson_commission_config,base.group_user,1,1,1,1
+access_saleperson_commission_config_line,access.saleperson_commission_config_line,target_gard_plans.model_saleperson_commission_config_line,base.group_user,1,1,1,1
+access_plans_management_config,access.plans_management_config,target_gard_plans.model_plans_management_config,base.group_user,1,1,1,1
+
+access_subplans_generator,access.subplans_generator,target_gard_plans.model_subplans_generator,base.group_user,1,1,1,1
+access_saleperson_plans_generator,access.saleperson_plans_generator,target_gard_plans.model_saleperson_plans_generator,base.group_user,1,1,1,1

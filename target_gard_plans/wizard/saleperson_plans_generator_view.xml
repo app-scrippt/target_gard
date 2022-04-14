@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="saleperson_plans_generator_form_view">
+            <field name="name">saleperson.plans.generator.form</field>
+            <field name="model">saleperson.plans.generator</field>
+            <field name="arch" type="xml">
+                <form string="Sub Plan">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="subplan_id" required="1" readonly="1"/>
+                            <field name="saleperson_target_amount"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button icon="fa-print fa-2x" string="Geneate" name="generate_plans" type="object" class="oe_highlight" />
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="saleperson_plans_generator_action_view" model="ir.actions.act_window">
+            <field name="name">Saleperson Plans Generator</field>
+            <field name="res_model">saleperson.plans.generator</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Saleperson Plan
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>
